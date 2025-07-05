@@ -10,7 +10,24 @@ after a successful [r/redditrequest](https://reddit.com/r/redditrequest) of a Pr
 
 use the subreddit menuitem after installation.
 
+## placeholders
+
+these placeholders are all case insensitive
+
+| placeholder | what it is replaced with | example |
+|:------------|:-------------------------|--------:|
+| `{{author}}` | the author's name (do /u/{{author}} for a link to the author's user page) | antboiy |
+| `{{subreddit}}` | the subreddit's name (do /r/{{subreddit}} for a link to the subreddit) | DrawMyOc |
+| `{{username}}` | the author's name (do /u/{{author}} for a link to the author's user page) | antboiy |
+| `{{subredditName}}` | the subreddit's name (do /r/{{subreddit}} for a link to the subreddit) | DrawMyOc |
+| `{{user}}` | the author's name (do /u/{{author}} for a link to the author's user page) | antboiy |
+
 ## changes
+
+### 0.0.4: fixedIt
+
+- fixed bug about presumed infinite loops
+- added a message box
 
 ### 0.0.3: updated README.
 
