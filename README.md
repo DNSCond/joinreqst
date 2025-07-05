@@ -1,44 +1,53 @@
-# JoinRequest archiver.
+# JoinRequest Archiver
 
-takes all existing join requests and archives them.
+Automatically archives all pending join requests for a subreddit.
 
-## use case
+## Use Case
 
-after a successful [r/redditrequest](https://reddit.com/r/redditrequest) of a Private or Restricted subreddit you will have a lot of join requests. you can clear them all using this.
+After successfully reclaiming a **Private** or **Restricted** subreddit through [r/redditrequest](https://reddit.com/r/redditrequest), you'll likely end up with a backlog of join requests. This bot helps you bulk-clear them in one go.
 
-## activation
+## Activation
 
-use the subreddit menuitem after installation.
+Once installed, access the bot via the subreddit menu item.
 
-## placeholders
+## Placeholders
 
-these placeholders are all case insensitive
+All placeholders are case-insensitive and can be used in message templates:
 
-| placeholder | what it is replaced with | example |
-|:------------|:-------------------------|--------:|
-| `{{author}}` | the author's name (do /u/{{author}} for a link to the author's user page) | antboiy |
-| `{{subreddit}}` | the subreddit's name (do /r/{{subreddit}} for a link to the subreddit) | DrawMyOc |
-| `{{username}}` | the author's name (do /u/{{username}} for a link to the author's user page) | antboiy |
-| `{{subredditName}}` | the subreddit's name (do /r/{{subredditName}} for a link to the subreddit) | DrawMyOc |
-| `{{user}}` | the author's name (do /u/{{user}} for a link to the author's user page) | antboiy |
+| Placeholder         | Replaced With           | Example    |
+| ------------------- | ----------------------- | ---------- |
+| `{{author}}`        | The author's username   | `antboiy`  |
+| `{{username}}`      | Same as `{{author}}`    | `antboiy`  |
+| `{{user}}`          | Same as `{{author}}`    | `antboiy`  |
+| `{{subreddit}}`     | The subreddit's name    | `DrawMyOc` |
+| `{{subredditName}}` | Same as `{{subreddit}}` | `DrawMyOc` |
 
-## changes
+> Tip: Use `/u/{{author}}` or `/r/{{subreddit}}` in messages to link to users or subreddits.
 
-### 0.0.5: sendAsSubreddit
+## Changelog
 
-- now sends messages as subreddit.
+### 0.0.6 - updated ReadME
 
-### 0.0.4: fixedIt
+thanks to chatgpt for decorating the readme
 
-- fixed bug about presumed infinite loops
-- added a message box
+### 0.0.5 - `sendAsSubreddit`
 
-### 0.0.3: updated README.
+* Messages are now sent from the subreddit itself.
 
-added a "use case"
+### 0.0.4 - `fixedIt`
 
-### 0.0.2: inital release.
+* Fixed a bug that could cause infinite loops.
+* Added a message box for custom replies.
 
-inital release.
+### 0.0.3 - README Update
 
-still bugs with toasts.
+* Added a "Use Case" section.
+
+### 0.0.2 - Initial Release
+
+* Basic functionality working.
+* Known bugs: some issues with toast notifications.
+
+## credits
+
+thanks to chatgpt for decorating the readme
