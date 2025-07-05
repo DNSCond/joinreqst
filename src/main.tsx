@@ -25,15 +25,14 @@ Devvit.addMenuItem({
 });
 
 async function* modmailPageination(reddit: RedditAPIClient): AsyncGenerator<{ id: string, conversation: ConversationData }> {
-  let continue_iterating = true, after: string | undefined = undefined
+  let continue_iterating = true, after: string | undefined = undefined;
   do {
     const { conversations } = await reddit.modMail.getConversations({
       state: 'join_requests', limit: 100, after,
     }); let loops = 0;
     for (const [id, conversation] of Object.entries(conversations)) {
       yield { id, conversation }; after = id; loops++;
-    }
-    continue_iterating = !(after === undefined) && (loops > 0);
+    } continue_iterating = !(after === undefined) && (loops > 0);
   } while (continue_iterating);
 }
 
@@ -58,11 +57,12 @@ const showMyForm = Devvit.createForm(
     if (subredditName === undefined) return context.ui.showToast(`there is no subredditName`);
     for await (const object of modmailPageination(context.reddit)) {
       if (event.values.message !== undefined) {
-        const username = object.conversation?.participant?.name ?? '[unknown User]';
+        const username = object.conversation?.participant?.name ?? '[unknown User]',
+          conversationId = object.id;
         await context.reddit.modMail.reply({
           body: event.values.message.replace(/{{author}}/i, username)
             .replace(/{{subreddit(?:name)?}}/i, subredditName ?? '[unknown Subreddit]')
-            .replace(/{{user(?:name)?}}/i, username), conversationId: object.id,
+            .replace(/{{user(?:name)?}}/i, username), conversationId, isAuthorHidden: true,
         });
       }
       await context.reddit.modMail.reply({
