@@ -58,11 +58,11 @@ const showMyForm = Devvit.createForm(
     for await (const object of modmailPageination(context.reddit)) {
       if (event.values.message !== undefined) {
         const username = object.conversation?.participant?.name ?? '[unknown User]',
-          conversationId = object.id;
+          conversationId = object.id, isAuthorHidden = true;
         await context.reddit.modMail.reply({
           body: event.values.message.replace(/{{author}}/i, username)
             .replace(/{{subreddit(?:name)?}}/i, subredditName ?? '[unknown Subreddit]')
-            .replace(/{{user(?:name)?}}/i, username), conversationId, isAuthorHidden: true,
+            .replace(/{{user(?:name)?}}/i, username), conversationId, isAuthorHidden,
         });
       }
       await context.reddit.modMail.reply({
