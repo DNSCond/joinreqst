@@ -1,6 +1,6 @@
 // Visit developers.reddit.com/docs to learn Devvit!
 
-import { Devvit, ConversationData, RedditAPIClient } from '@devvit/public-api';
+import { Devvit, ConversationData, RedditAPIClient, ConversationStateFilter } from '@devvit/public-api';
 
 Devvit.configure({ redditAPI: true });
 
@@ -24,12 +24,12 @@ Devvit.addMenuItem({
   },
 });
 
-async function* modmailPageination(reddit: RedditAPIClient): AsyncGenerator<{ id: string, conversation: ConversationData }> {
+async function* modmailPageination(reddit: RedditAPIClient, state: ConversationStateFilter = "join_requests"):
+  AsyncGenerator<{ id: string, conversation: ConversationData }> {
   let continue_iterating = true, after: string | undefined = undefined;
   do {
-    const { conversations } = await reddit.modMail.getConversations({
-      state: 'join_requests', limit: 100, after,
-    }); let loops = 0;
+    let loops = 0; const limit = 100, { conversations } =
+      await reddit.modMail.getConversations({ state, limit, after, });
     for (const [id, conversation] of Object.entries(conversations)) {
       yield { id, conversation }; after = id; loops++;
     } continue_iterating = !(after === undefined) && (loops > 0);
@@ -45,6 +45,7 @@ const showMyForm = Devvit.createForm(
         label: 'send message to all users.',
         helpText: 'if you want to respond to all archived modmails the same way do it here. see readme for placeholders',
       },
+      //{ type: 'boolean', name: 'notification', label: 'archive Automoderator Modmails', },
     ],
     title: 'Archive settings',
     description: 'Youre about to archive all join requests',
@@ -69,9 +70,16 @@ const showMyForm = Devvit.createForm(
         body: `u/${currentUser} told me to archive this modmail`,
         conversationId: object.id, isInternal: true,
       });
-      context.reddit.modMail.archiveConversation(object.id);
+      await context.reddit.modMail.archiveConversation(object.id);
       removed++;
     }
+
+    // for await (const object of modmailPageination(context.reddit, 'notifications')) {
+    //   if (object.conversation.authors.filter(m => m.name === 'AutoModerator').length > 0) {
+    // await context.reddit.modMail.reply({\body: `u/${currentUser} told me to archive this modmail`,
+    // conversationId: object.id, isInternal: true,});await context.reddit.modMail.archiveConversation
+    // (object.id); removed++;}}
+
     context.ui.showToast(`archived ${removed} modmails`);
   }
 );

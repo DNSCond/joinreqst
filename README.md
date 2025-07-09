@@ -22,7 +22,7 @@ All placeholders are case-insensitive and can be used in message templates:
 | `{{subreddit}}`     | The subreddit's name    | `DrawMyOc` |
 | `{{subredditName}}` | Same as `{{subreddit}}` | `DrawMyOc` |
 
-> Tip: Use `/u/{{author}}` or `/r/{{subreddit}}` in messages to link to users or subreddits.
+> Tip: Use `u/{{author}}` or `r/{{subreddit}}` in messages to link to users or subreddits.
 
 ## Changelog
 
@@ -32,21 +32,21 @@ thanks to chatgpt for decorating the readme
 
 ### 0.0.5 - `sendAsSubreddit`
 
-* Messages are now sent from the subreddit itself.
+- Messages are now sent from the subreddit itself.
 
 ### 0.0.4 - `fixedIt`
 
-* Fixed a bug that could cause infinite loops.
-* Added a message box for custom replies.
+- Fixed a bug that could cause infinite loops.
+- Added a message box for custom replies.
 
 ### 0.0.3 - README Update
 
-* Added a "Use Case" section.
+- Added a "Use Case" section.
 
 ### 0.0.2 - Initial Release
 
-* Basic functionality working.
-* Known bugs: some issues with toast notifications.
+- Basic functionality working.
+- Known bugs: some issues with toast notifications.
 
 ## credits
 
