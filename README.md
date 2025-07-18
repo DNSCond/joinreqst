@@ -26,9 +26,17 @@ All placeholders are case-insensitive and can be used in message templates:
 
 ## Changelog
 
+### 0.1.0 - updated ReaDME
+
+- ReaDME
+
+### 0.0.7 - added options for other types
+
+- added options for other types
+
 ### 0.0.6 - updated ReadME
 
-thanks to chatgpt for decorating the readme
+- thanks to chatgpt for decorating the readme
 
 ### 0.0.5 - `sendAsSubreddit`
 
