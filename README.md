@@ -26,6 +26,10 @@ All placeholders are case-insensitive and can be used in message templates:
 
 ## Changelog
 
+### 0.1.1 - unNeededFunctionallity
+
+- removed some unNeededFunctionallity
+
 ### 0.1.0 - updated ReaDME
 
 - ReaDME
