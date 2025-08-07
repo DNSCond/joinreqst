@@ -26,6 +26,11 @@ All placeholders are case-insensitive and can be used in message templates:
 
 ## Changelog
 
+### 0.1.2 - heatedFixtionallity (0.1.3, 0.1.4: updated version in readme)
+
+- added so it only sees your own subreddit, hopefully.
+- [fixes "warning to everyone using JoinRequest archiver. archives everything, even across subreddits"](https://www.reddit.com/user/antboiy/comments/1mk0zsy/warning_to_everyone_using_joinrequest_archiver/)
+
 ### 0.1.1 - unNeededFunctionallity
 
 - removed some unNeededFunctionallity
