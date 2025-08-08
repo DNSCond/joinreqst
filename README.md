@@ -8,11 +8,9 @@ After successfully reclaiming a **Private** or **Restricted** subreddit through 
 
 ## Activation
 
-Once installed, access the bot via the subreddit menu item labeled "ArchiveAll" in your subreddit's moderator tools.
-
-note that there will be a "u/${currentUser} told me to archive this modmail" (where ${currentUser} is replaced with your username)
-private mod note on activation in every modmail it archives. this is to provide greater transparancy to moderators in your team
-(and even outside before version "0.1.2 - heatedFixtionallity")
+Access the bot via the subreddit menu item labeled "ArchiveAll" in your subreddit's moderator tools.
+When activated, the bot adds a private note to each archived modmail, stating "u/[YourUsername] told me to archive this modmail"
+ensuring transparency with your moderator team. (and even outside before bug in version "0.1.2 - heatedFixtionallity")
 
 ## Custom Message Textbox
 
@@ -22,7 +20,7 @@ Use placeholders like `{{author}}` or `{{subreddit}}` to customize the message d
 For example, entering `Hello u/{{author}}, your request to join r/{{subreddit}} has been archived.`
 will send a message to each user, replacing placeholders with their username and the subreddit name.
 
-Note: leave the field empty to not send anything to the user.
+**Note**: leave the field empty to not send the message to the user.
 
 ## Placeholders
 
@@ -38,7 +36,26 @@ All placeholders are case-insensitive and can be used in message templates:
 
 > Tip: Use `u/{{author}}` or `r/{{subreddit}}` in messages to link to users or subreddits.
 
+## Supported Modmail Types
+
+The bot supports archiving various modmail types, selectable via a multi-select dropdown in the ArchiveAll form:
+- All
+- New
+- In Progress
+- Ban Appeals
+- Join Requests
+- Highlighted
+- Notifications
+- Inbox
+- Filtered
+- Default
+
 ## Changelog
+
+### 0.1.7: slice of the read me.
+
+- updated readme
+- thanks to grok for writing more of the readme
 
 ### 0.1.6: im not afraid of grok by xai.
 

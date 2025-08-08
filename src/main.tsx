@@ -4,26 +4,6 @@ import { Devvit, ConversationData, RedditAPIClient, ConversationStateFilter } fr
 
 Devvit.configure({ redditAPI: true });
 
-// Devvit.addMenuItem({
-//   location: 'subreddit',
-//   label: 'archive all join requests',
-//   forUserType: 'moderator',
-//   async onPress(_event, context: Devvit.Context) {
-//     context.ui.showForm(showMyForm);
-//   },
-// });
-
-// Devvit.addMenuItem({
-//   location: 'subreddit',
-//   label: 'Query all join requests',
-//   forUserType: 'moderator',
-//   async onPress(_event, context: Devvit.Context) {
-//     let queried = 0;
-//     for await (const _ of modmailPageination(context.reddit)) queried++;
-//     context.ui.showToast(`there are ${queried} join requests`);
-//   },
-// });
-
 Devvit.addMenuItem({
   location: 'subreddit',
   label: 'ArchiveAll',
