@@ -26,6 +26,10 @@ All placeholders are case-insensitive and can be used in message templates:
 
 ## Changelog
 
+### 0.1.5: Promise.allSettled
+
+- changed something that it no longer waits one by one. doing them all asynchronousl
+
 ### 0.1.2 - heatedFixtionallity (0.1.3, 0.1.4: updated version in readme)
 
 - added so it only sees your own subreddit, hopefully.

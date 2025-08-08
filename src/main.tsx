@@ -76,37 +76,46 @@ const queryAllFormKey = Devvit.createForm(
     const subredditName = await context.reddit.getCurrentSubredditName();
     if (subredditName === undefined) return context.ui.showToast(`there is no subredditName`);
 
+    const array = [];
     for (const type of event.values.type) {
       for await (const object of modmailPageination(context.reddit, type as ConversationStateFilter, subredditName)) {
-        if (event.values.message !== undefined) {
-          const username = object.conversation?.participant?.name ?? '[unknown User]',
-            conversationId = object.id, isAuthorHidden = true;
-          await context.reddit.modMail.reply({
-            body: event.values.message.replace(/{{author}}/i, username)
-              .replace(/{{subreddit(?:name)?}}/i, subredditName ?? '[unknown Subreddit]')
-              .replace(/{{user(?:name)?}}/i, username), conversationId, isAuthorHidden,
-          });
-        }
-        await context.reddit.modMail.reply({
-          body: `u/${currentUser} told me to archive this modmail`,
-          conversationId: object.id, isInternal: true,
-        });
-        await context.reddit.modMail.archiveConversation(object.id);
+        array.push(modmailArchive(object, event.values.message, currentUser, context));
         removed++;
       }
     }
+    
+    await Promise.allSettled(array);
     context.ui.showToast(`archived ${removed} modmails`);
   }
 );
 
-async function* modmailPageination(reddit: RedditAPIClient, state: ConversationStateFilter = "join_requests", subredditName: string):
-  AsyncGenerator<{ id: string, conversation: ConversationData }> {
+async function modmailArchive(conversationData: ConvoData, message: undefined | string, currentUser: string, devvitContext: Devvit.Context) {
+  const conversationId = conversationData.id, subredditName = conversationData.subredditName ?? '[unknown Subreddit]',
+    username = conversationData.conversation?.participant?.name ?? '[unknown User]', isAuthorHidden = true;
+  if (message) {
+    await devvitContext.reddit.modMail.reply({
+      body: message.replace(/{{author}}/i, username)
+        .replace(/{{subreddit(?:name)?}}/i, subredditName)
+        .replace(/{{user(?:name)?}}/i, username),
+      conversationId, isAuthorHidden,
+    });
+  }
+  await devvitContext.reddit.modMail.reply({
+    body: `u/${currentUser} told me to archive this modmail`,
+    conversationId, isInternal: true,
+  });
+  await devvitContext.reddit.modMail.archiveConversation(conversationId);
+}
+
+type ConvoData = { id: string, conversation: ConversationData, subredditName: string };
+
+async function* modmailPageination(reddit: RedditAPIClient, state: ConversationStateFilter = "join_requests", subredditName: string): AsyncGenerator<ConvoData> {
   let continue_iterating = true, after: string | undefined = undefined;
   do {
     let loops = 0; const limit = 100, { conversations } =
       await reddit.modMail.getConversations({ state, limit, after, subreddits: [subredditName] });
     for (const [id, conversation] of Object.entries(conversations)) {
-      yield { id, conversation }; after = id; loops++;
+      yield { id, conversation, subredditName }; after = id; loops++;
     } continue_iterating = !(after === undefined) && (loops > 0);
   } while (continue_iterating);
 }
