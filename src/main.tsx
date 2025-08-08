@@ -92,7 +92,7 @@ const queryAllFormKey = Devvit.createForm(
 async function modmailArchive(conversationData: ConvoData, message: undefined | string, currentUser: string, devvitContext: Devvit.Context) {
   const conversationId = conversationData.id, subredditName = conversationData.subredditName ?? '[unknown Subreddit]',
     username = conversationData.conversation?.participant?.name ?? '[unknown User]', isAuthorHidden = true;
-  if (message) {
+  if (message?.trim()) {
     await devvitContext.reddit.modMail.reply({
       body: message.replace(/{{author}}/i, username)
         .replace(/{{subreddit(?:name)?}}/i, subredditName)
