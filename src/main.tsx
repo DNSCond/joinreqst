@@ -35,7 +35,7 @@ const queryAllFormKey = Devvit.createForm(
           { label: 'filtered', value: 'filtered' },
           { label: 'default', value: 'default' },
         ],
-        defaultValue: ['notifications'],
+        defaultValue: ['join_requests'],
         multiSelect: true,
         required: true,
       },
@@ -100,14 +100,14 @@ async function* modmailPageination(reddit: RedditAPIClient, state: ConversationS
   } while (continue_iterating);
 }
 
-// function countBooleans(array: any[]): { true: number, false: number } {
-//   array = Array.from(array ?? [], b => Boolean(b));
-//   const result = { true: 0, false: 0 };
-//   for (let e of array) {
-//     if (e) result.true += 1;
-//     else result.false += 1;
-//   } return result;
-// }
+function countBooleans(array: any[]): { true: number, false: number } {
+  array = Array.from(array ?? [], b => Boolean(b));
+  const result = { true: 0, false: 0 };
+  for (let e of array) {
+    if (e) result.true += 1;
+    else result.false += 1;
+  } return result;
+}
 
 function countBooleansAndNullishItems(array: any[]): { true: number, false: number, nullish: number } {
   array = Array.from(array ?? [], b => (b === null || b === undefined) ? null : Boolean(b));
@@ -116,6 +116,61 @@ function countBooleansAndNullishItems(array: any[]): { true: number, false: numb
     if (e === null) result.nullish += 1;
     else if (e) result.true += 1;
     else result.false += 1;
+  } return result;
+}
+
+function countTypes(array: any[]): {
+  true: number,
+  false: number,
+  null: number,
+  undefined: number,
+  number: number,
+  BigInt: bigint,
+  Symbol: number,
+  NaN: number,
+  P_Infinity: number,
+  N_Infinity: number,
+  string: number,
+  object: number,
+  function: number,
+} {
+  array = Array.from(array ?? []);
+  const number = 0, bigint = 0n, result = {
+    true: number,
+    false: number,
+    null: number,
+    undefined: number,
+    number: number,
+    BigInt: bigint,
+    Symbol: number,
+    NaN: number,
+    P_Infinity: number,
+    N_Infinity: number,
+    string: number,
+    object: number,
+    function: number,
+  };
+  for (let e of array) {
+    if (e === null) {
+      result.null += 1;
+    } else if (Number.isNaN(e)) {
+      result.NaN += 1;
+    } else if (e === +Infinity) {
+      result.P_Infinity += 1;
+    } else if (e === -Infinity) {
+      result.N_Infinity += 1;
+    } else switch (typeof e) {
+      case "undefined": result.undefined += 1; break;
+      case "function": result.function += 1; break;
+      case "bigint": result.BigInt += 1n; break;
+      case "symbol": result.Symbol += 1; break;
+      case "number": result.number += 1; break;
+      case "string": result.string += 1; break;
+      case "object": result.object += 1; break;
+      case 'boolean':
+        if (e) result.true += 1;
+        else result.false += 1;
+    }
   } return result;
 }
 
