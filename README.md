@@ -54,6 +54,11 @@ The bot supports archiving various modmail types, selectable via a multi-select 
 
 ### 0.1.7: slice of the read me.
 
+- changed default value from notifications to join requests
+- now shows how much archived success it has
+
+### 0.1.8: slice of the read me.
+
 - updated readme
 - thanks to grok for writing more of the readme
 

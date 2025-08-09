@@ -65,7 +65,7 @@ const queryAllFormKey = Devvit.createForm(
 
     const counted = countBooleansAndNullishItems((await Promise.allSettled(array)).map(promise => promise.status === 'fulfilled'));
 
-    context.ui.showToast(`archived ${counted.true} modmails, (${counted.false} failed)`);
+    context.ui.showToast(`archived ${counted.true} modmails${counted.false ? `, (${counted.false} failed)` : ''}!`);
   }
 );
 
