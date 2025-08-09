@@ -51,7 +51,7 @@ const queryAllFormKey = Devvit.createForm(
     acceptLabel: 'Submit',
   },
   async function (event, context: Devvit.Context) {
-    let removed = 0, currentUser = await context.reddit.getCurrentUsername();
+    const currentUser = await context.reddit.getCurrentUsername();
     if (currentUser === undefined) return context.ui.showToast(`there is no currentUser`);
     const subredditName = await context.reddit.getCurrentSubredditName();
     if (subredditName === undefined) return context.ui.showToast(`there is no subredditName`);
@@ -60,12 +60,12 @@ const queryAllFormKey = Devvit.createForm(
     for (const type of event.values.type) {
       for await (const object of modmailPageination(context.reddit, type as ConversationStateFilter, subredditName)) {
         array.push(modmailArchive(object, event.values.message, currentUser, context));
-        removed++;
       }
     }
-    
-    await Promise.allSettled(array);
-    context.ui.showToast(`archived ${removed} modmails`);
+
+    const counted = countBooleansAndNullishItems((await Promise.allSettled(array)).map(promise => promise.status === 'fulfilled'));
+
+    context.ui.showToast(`archived ${counted.true} modmails, (${counted.false} failed)`);
   }
 );
 
@@ -98,6 +98,25 @@ async function* modmailPageination(reddit: RedditAPIClient, state: ConversationS
       yield { id, conversation, subredditName }; after = id; loops++;
     } continue_iterating = !(after === undefined) && (loops > 0);
   } while (continue_iterating);
+}
+
+// function countBooleans(array: any[]): { true: number, false: number } {
+//   array = Array.from(array ?? [], b => Boolean(b));
+//   const result = { true: 0, false: 0 };
+//   for (let e of array) {
+//     if (e) result.true += 1;
+//     else result.false += 1;
+//   } return result;
+// }
+
+function countBooleansAndNullishItems(array: any[]): { true: number, false: number, nullish: number } {
+  array = Array.from(array ?? [], b => (b === null || b === undefined) ? null : Boolean(b));
+  const result = { true: 0, false: 0, nullish: 0 };
+  for (let e of array) {
+    if (e === null) result.nullish += 1;
+    else if (e) result.true += 1;
+    else result.false += 1;
+  } return result;
 }
 
 export default Devvit;
