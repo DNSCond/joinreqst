@@ -1,8 +1,18 @@
 // Visit developers.reddit.com/docs to learn Devvit!
 
 import { Devvit, ConversationData, RedditAPIClient, ConversationStateFilter } from '@devvit/public-api';
+import { isAppVersionSupported } from './upgradeRequirer.js';
 
 Devvit.configure({ redditAPI: true });
+
+Devvit.addSettings([
+  {
+    type: 'string',
+    name: 'upgradeRequirer-semver-lowest-supported',
+    label: "lowest-supported version in semi semver",
+    scope: 'app',
+  },
+]);
 
 Devvit.addMenuItem({
   location: 'subreddit',
@@ -55,6 +65,10 @@ const queryAllFormKey = Devvit.createForm(
     if (currentUser === undefined) return context.ui.showToast(`there is no currentUser`);
     const subredditName = await context.reddit.getCurrentSubredditName();
     if (subredditName === undefined) return context.ui.showToast(`there is no subredditName`);
+    if (!await isAppVersionSupported(context)) {
+      context.ui.showToast(`version not supported. please update your app`);;
+      return;
+    }
 
     const array = [];
     for (const type of event.values.type) {

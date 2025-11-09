@@ -52,6 +52,10 @@ The bot supports archiving various modmail types, selectable via a multi-select 
 
 ## Changelog
 
+### 0.1.9: upgradeRequirer
+
+ - upgradeRequirer
+
 ### 0.1.8: mistake of the readme
 
 - changed default value from notifications to join requests
