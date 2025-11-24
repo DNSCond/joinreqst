@@ -59,8 +59,7 @@ const queryAllFormKey = Devvit.createForm(
     title: 'Archive settings',
     description: 'Youre about to archive all modmails of this type',
     acceptLabel: 'Submit',
-  },
-  async function (event, context: Devvit.Context) {
+  }, async function (event, context: Devvit.Context) {
     const currentUser = await context.reddit.getCurrentUsername();
     if (currentUser === undefined) return context.ui.showToast(`there is no currentUser`);
     const subredditName = await context.reddit.getCurrentSubredditName();
@@ -70,15 +69,13 @@ const queryAllFormKey = Devvit.createForm(
       return;
     }
 
-    const array = [];
+    const array = [], knownIds = new Set<string>;
     for (const type of event.values.type) {
-      for await (const object of modmailPageination(context.reddit, type as ConversationStateFilter, subredditName)) {
+      for await (const object of modmailPageination(context.reddit, type as ConversationStateFilter, subredditName, knownIds)) {
         array.push(modmailArchive(object, event.values.message, currentUser, context));
       }
     }
-
     const counted = countBooleansAndNullishItems((await Promise.allSettled(array)).map(promise => promise.status === 'fulfilled'));
-
     context.ui.showToast(`archived ${counted.true} modmails${counted.false ? `, (${counted.false} failed)` : ''}!`);
   }
 );
@@ -103,13 +100,16 @@ async function modmailArchive(conversationData: ConvoData, message: undefined | 
 
 type ConvoData = { id: string, conversation: ConversationData, subredditName: string };
 
-async function* modmailPageination(reddit: RedditAPIClient, state: ConversationStateFilter = "join_requests", subredditName: string): AsyncGenerator<ConvoData> {
+async function* modmailPageination(reddit: RedditAPIClient,
+  state: ConversationStateFilter = "join_requests",
+  subredditName: string, knownIds: Set<string> = new Set): AsyncGenerator<ConvoData> {
   let continue_iterating = true, after: string | undefined = undefined;
   do {
     let loops = 0; const limit = 100, { conversations } =
       await reddit.modMail.getConversations({ state, limit, after, subreddits: [subredditName] });
     for (const [id, conversation] of Object.entries(conversations)) {
-      yield { id, conversation, subredditName }; after = id; loops++;
+      after = id; loops++; if (knownIds.has(id)) continue;
+      else knownIds.add(id); yield { id, conversation, subredditName };
     } continue_iterating = !(after === undefined) && (loops > 0);
   } while (continue_iterating);
 }

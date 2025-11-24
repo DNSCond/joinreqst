@@ -52,9 +52,13 @@ The bot supports archiving various modmail types, selectable via a multi-select 
 
 ## Changelog
 
+### 0.1.12: some minor changes
+
+hopefully it doesnt spam anymore
+
 ### 0.1.9: upgradeRequirer
 
- - upgradeRequirer
+- upgradeRequirer
 
 ### 0.1.8: mistake of the readme
 
