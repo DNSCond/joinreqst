@@ -121,3 +121,7 @@ hopefully it doesnt spam anymore
 ## credits
 
 thanks to chatgpt for decorating the readme in 0.0.6; and grok in 0.1.6;
+
+## socials
+
+[https://github.com/DNSCond/joinreqst](https://github.com/DNSCond/joinreqst)
